@@ -1,0 +1,16 @@
+{% extends 'notes/home.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+
+{% block content %} 
+<form method="post">
+    <div class="container-xxl" style="width: 900px;">
+        <div class="form-control">
+            {% csrf_token %} {{form.as_p}}
+            <button type="submit" class="btn btn-success">Login</button>
+            <hr>
+            <p class="paragraph">Don't have an account? Create one <a href="/sign-up" >here</a>!</p>
+        </div>
+    </div>
+</form>
+{% endblock %}

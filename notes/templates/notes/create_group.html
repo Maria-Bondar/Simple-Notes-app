@@ -1,0 +1,19 @@
+{% extends "notes/notes.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Створити групу</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {{ form.name.errors }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create group</button>
+        <a href="{% url 'notes:note_create' %}" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+{% endblock %}

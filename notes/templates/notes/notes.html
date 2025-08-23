@@ -1,0 +1,102 @@
+{% extends "notes/home.html"%}
+{% load static %}
+{% block content %}
+    <div class="container-xxl">
+        <h1>Notes</h1>
+        <form method="get" style="margin-bottom: 20px;">
+
+        <p>
+            <div class="d-flex">
+                <label for="search" class="col-form-label me-2">Search by Title:</label>
+                <input type="text" name="search" id="search" value="{{ search_query|default:'' }}" class="col-form-control">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </p>
+
+        <p>
+            <div class="d-flex">
+                <label for="category" class="col-form-label me-2">Category</label>
+                <select name="category" id="category" class="form-select" aria-label="Default select example" style="width: 400px">
+                    <option value="">All</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </p>
+        <p>
+            <div class="d-flex">
+                <label for="reminder" class="col-form-label me-2">Reminder</label>
+                <select name="reminder" id="reminder" class="form-select" aria-label="Default select example" style="width: 400px">
+                    <option value="">All</option>
+                    <option value="future" {% if request.GET.reminder == "future" %}selected{% endif %}>Future</option>
+                    <option value="past" {% if request.GET.reminder == "past" %}selected{% endif %}>Past</option>
+                    <option value="today" {% if request.GET.reminder == "today" %}selected{% endif %}>Today</option>
+                    <option value="week" {% if request.GET.reminder == "week" %}selected{% endif %}>Next 7 days</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </p>
+        </form>
+
+        <ul>
+            {% for note in notes %}
+                <li>
+                    <div class="card">
+                                <a href="{% url 'notes:note_detail' note.pk %}" style="text-decoration: none; color: black">
+                                    <div class="card-body">
+                                        <p>
+                                            <h3><strong>{{ note.title }}</strong> </h3>
+                                        </p>
+                                        <p><strong>Description:</strong>
+                                            {{ note.description }}
+                                        </p>
+                                        <p><strong>Reminder:</strong>
+                                            {{ note.reminder }}
+                                        </p>
+                                        <p><strong>Category:</strong>
+                                            {{ note.category }}
+                                        </p>
+
+                                </a>
+
+                                <form action="{% url 'notes:note_delete' note.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ note.id }}">
+                                        Delete
+                                    </button>
+                                </form>
+
+                                <div class="modal fade" id="deleteModal{{ note.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ note.id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel{{ note.id }}">Confirm Delete</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete "{{ note.title }}"?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form action="{% url 'notes:note_delete' note.id %}" method="post" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <hr>
+                            </div>
+                    </div>
+                </li>
+            {% empty %}
+                <li>No notes here.</li>
+            {% endfor %}
+        </ul>
+    </div>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'notes/home.html' %}
+{% load static %}
+{% block title %}Sign Up{% endblock %}
+
+{% block content %} 
+<form method="post">
+    <div class="container-xxl" style="width: 900px;">
+        {% csrf_token %}
+        <div class="form-control">
+
+            <div class="mb-3">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+            
+            <div class="mb-3">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+            
+            <div class="mb-3">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+        <button type="submit" class="btn btn-success">Register</button>
+        <hr>
+        <p class="paragraph">Have an account? Login <a href="/login" >here</a>!</p>
+        </div>
+    </div>
+</form>
+{% endblock %}

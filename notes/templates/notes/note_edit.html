@@ -1,0 +1,52 @@
+{% extends "notes/home.html"%}
+{% load static %}
+{% block content %}
+    <div class="container-xxl">
+        <p>
+            <a href="{% url 'notes:notes' %}" class="btn btn-primary btn-lg">Back to notes</a>
+            <br>
+        </p>
+        <div class="card">
+            <div class="card-body">
+                <h2>Edit Note</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+                        {{ form.title }}
+                        {{ form.title.errors }}
+                    </div>
+
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Description</span>
+                        {{ form.description }}
+                        {{ form.description.errors }}
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <label for="id_reminder" class="input-group-text">Reminder (date & time):</label><br>
+                        {{ form.reminder }}
+                        {{ form.reminder.errors }}
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Category</span>
+                        {{ form.category }}
+                        {{ form.category.errors }}
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">{{ form.group.label_tag }}</span>
+                        {{ form.group }}
+                        {{ form.group.errors }}
+                        <div class="form-text">Leave blank if you want to create a personal note.</div>
+                    </div>
+
+                    <div class="buttons-group">
+                        <button type="submit" class="btn btn-success">💾 Save changes</button>
+                        <a href="{% url 'notes:note_detail' note.pk %}" class="btn btn-primary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+{% endblock %}

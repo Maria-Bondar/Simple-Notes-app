@@ -1,0 +1,24 @@
+{% extends "notes/home.html" %}
+{% block content %}
+<div class="container-xxl mt-4">
+    <h2 class="mb-4">All notes</h2>
+
+    {% if notes %}
+        <div class="list-group">
+            {% for note in notes %}
+            <a href="{% url 'notes:note_detail' note.pk %}" style="text-decoration: none; color: black">
+                <div class="list-group-item">
+                    <h5 class="mb-1">{{ note.title }}</h5>
+                    <p class="mb-1">{{ note.content|truncatewords:20 }}</p>
+                    <small>
+                        Author: {{ note.user.username }} 
+                    </small>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">There are no notes to display.</p>
+    {% endif %}
+</div>
+{% endblock %}
